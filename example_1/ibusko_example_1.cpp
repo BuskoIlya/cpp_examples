@@ -1,6 +1,8 @@
 ﻿#include <ctime>
 #include <iostream>
 
+void print_array(const wchar_t* const comment, int* arr, const int n);
+
 int main() {
     std::setlocale(LC_ALL, "Russian");
 
@@ -14,11 +16,7 @@ int main() {
         arr[i] = rand() % 10;
     }
 
-    std::wcout << L"Был сгенерирован массив:";
-    for (int i = 0; i < arr_size; i++) {
-        std::cout << " " << arr[i];
-    }
-    std::cout << std::endl;
+    print_array(L"Был сгенерирован массив:", arr, arr_size);
 
     for (int i = 1; i < arr_size - 1; i++) {
         if (!(((i % 2 == 0) && (arr[i] >= arr[i - 1])) || ((i % 2 != 0) && (arr[i] <= (arr[i - 1]))))) {
@@ -26,11 +24,16 @@ int main() {
         }
     }
 
-    std::wcout << L"Массив после обработки:";
-    for (int i = 0; i < arr_size; i++) {
-        std::cout << " " << arr[i];
-    }
-    std::cout << std::endl;
+    print_array(L"Массив после обработки:", arr, arr_size);
 
     delete[] arr;
+}
+
+void print_array(const wchar_t* const comment, int* arr, const int n) {
+    const char space = ' ';
+    std::wcout << comment;
+    for (int i = 0; i < n; i++) {
+        std::cout << space << arr[i];
+    }
+    std::cout << std::endl;
 }
