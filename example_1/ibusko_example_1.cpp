@@ -19,7 +19,9 @@ int main() {
     print_array(L"Был сгенерирован массив:", arr, arr_size);
 
     for (int i = 1; i < arr_size - 1; i++) {
-        if (!(((i % 2 == 0) && (arr[i] >= arr[i - 1])) || ((i % 2 != 0) && (arr[i] <= (arr[i - 1]))))) {
+        bool even_condition = !(i % 2 == 0 && arr[i] > arr[i - 1]);
+        bool odd_condition = !(i % 2 != 0 && arr[i] < arr[i - 1]);
+        if (even_condition && odd_condition) {
             std::swap(arr[i], arr[i - 1]);
         }
     }
