@@ -1,7 +1,9 @@
-﻿#include <ctime>
+﻿#include <clocale>
+#include <ctime>
 #include <iostream>
+#include <utility>
 
-void print_array(const wchar_t* const comment, int* arr, const int n);
+void print_array(const wchar_t* const comment, const int* const arr, const int n);
 
 int main() {
     std::setlocale(LC_ALL, "Russian");
@@ -18,20 +20,25 @@ int main() {
 
     print_array(L"Был сгенерирован массив:", arr, arr_size);
 
-    for (int i = 1; i < arr_size - 1; i++) {
-        bool even_condition = !(i % 2 == 0 && arr[i] > arr[i - 1]);
-        bool odd_condition = !(i % 2 != 0 && arr[i] < arr[i - 1]);
-        if (even_condition && odd_condition) {
-            std::swap(arr[i], arr[i - 1]);
+    {
+        bool even_condition;
+        bool odd_condition;
+        for (int i = 1; i < arr_size - 1; i++) {
+            even_condition = !(i % 2 == 0 && arr[i] > arr[i - 1]);
+            odd_condition = !(i % 2 != 0 && arr[i] < arr[i - 1]);
+            if (even_condition && odd_condition) {
+                std::swap(arr[i], arr[i - 1]);
+            }
         }
     }
 
     print_array(L"Массив после обработки:", arr, arr_size);
 
     delete[] arr;
+    return 0;
 }
 
-void print_array(const wchar_t* const comment, int* arr, const int n) {
+void print_array(const wchar_t* const comment, const int* const arr, const int n) {
     const char space = ' ';
     std::wcout << comment;
     for (int i = 0; i < n; i++) {
