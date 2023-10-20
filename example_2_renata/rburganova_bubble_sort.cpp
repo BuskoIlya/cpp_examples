@@ -1,31 +1,35 @@
-﻿#include <algorithm>
-#include <ctime>
+﻿#include <ctime>
 #include <iostream>
 
-// TODO
-// Перетащить main на самый верх
-// Инициализировать функции
-// Убрать Мусор (комменты и тд)
-// Убрать ненужные библиотеки
-// неизменяемые переменные сделать конст
-// Отдельная функция генерации рандомного массива
-
-int* bubbleSort(const int size, int* arr);
-int* randomArr(const int size);
-int* stdSort(int size, int* arr);
-void test(const int* array, const int* array_copy, int size);
-
+// Camel case <- google
+// Если в каждой функции используется size, то его стоит писать впереди/сзади всегда
+void BubbleSort(const int size, int array[]);
+void RandomArr(const int size, int array[]);
+void StdSort(const int size, const int unsorted_arr[], int std_array[]);
+void Test(const int size, const int bubblesort_array[], const int std_array[]);
 
 int main() {
-    std::setlocale(LC_ALL, "Russian");
-
-    int size = 10;
-
-    test(bubbleSort(size, randomArr(size)), stdSort(size, randomArr(size)), size);
+    setlocale(LC_ALL, "Russian");
+    const int size = 10; // const
+    int arr[size]; // Создаем массив в main, тк иначе он пропадет из стека после завершения функции (RandomArr)
+    int std_arr[size];
+    RandomArr(size, arr);
+    StdSort(size, arr, std_arr);
+    BubbleSort(size, arr);
+    Test(size, arr, std_arr);
 }
 
-int* randomArr(const int size) {
-    int array[size];
+void BubbleSort(const int size, int array[]) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size - 1; j++) {
+            if (array[j] > array[j + 1]) {
+                std::swap(array[j], array[j + 1]);
+            }
+        }
+    }
+}
+
+void RandomArr(const int size, int array[]) {
     srand(time(0));
     for (int i = 0; i < size; i++) {
         array[i] = rand() % 30;
@@ -34,43 +38,25 @@ int* randomArr(const int size) {
     for (int i = 0; i < size; i++) {
         std::cout << array[i] << " ";
     }
-    return array;
+    std::cout << std::endl;
 }
 
-int* stdSort(int size, int* arr) {
-    int array_copy[size];
+void StdSort(const int size, const int unsorted_arr[], int std_array[]) {
     for (int i = 0; i < size; i++) {
-        array_copy[i] = arr[i];
+        std_array[i] = unsorted_arr[i];
     }
-    std::sort(array_copy, array_copy + size);
-    return array_copy;
+    std::sort(std_array, std_array + size);
 }
 
-int* bubbleSort(int size, int* array) {
+void Test(const int size, const int bubblesort_array[], const int std_array[]) {
+    // Нам не нужна bool result
     for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size - 1; j++) {
-            if (array[j] > array[j + 1]) {
-                std::swap(array[j], array[j + 1]);
-            }
+        if (bubblesort_array[i] != std_array[i]) {
+            std::wcout << L"Результаты не сошлись";
+            return;
         }
     }
-    return array;
-}
-
-void test(const int* array, const int* array_copy, int size) {
-    bool result = true;
-    for (int i = 0; i < size; i++) {
-        if (array[i] != array_copy[i]) {
-            result = false;
-        }
-    }
-
-    if (result == 1) {
-        std::wcout << L"Результаты сошлись";
-    }
-    else {
-        std::wcout << L"Результаты не сошлись";
-    }
+    std::wcout << L"Результаты сошлись" << std::endl;
 }
 
 
